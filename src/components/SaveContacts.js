@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
@@ -9,6 +10,7 @@ class SaveContacts extends Component {
     this.state = {
       name: "",
       email: "",
+      phone: "",
       gender: "",
     };
   }
@@ -18,6 +20,7 @@ class SaveContacts extends Component {
     if (
       this.state.name === "" ||
       this.state.email === "" ||
+      this.state.phone === "" ||
       this.state.gender === ""
     ) {
       toast.error("All Fields are Required", {
@@ -26,14 +29,14 @@ class SaveContacts extends Component {
       });
       return;
     } else {
-      toast.error("Contact Saved", {
+      toast.success("Contact Saved", {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 1000,
       });
     }
-    console.log(this.state);
     this.props.saveContactHandler(this.state);
-    this.setState({ name: "", email: "", gender: "" });
+    this.setState({ name: "", email: "", phone: "", gender: "" });
+    // console.log(this.props);
   };
 
   render() {
@@ -60,6 +63,15 @@ class SaveContacts extends Component {
             />
           </div>
           <div className="field">
+            <label>Phone</label>
+            <input
+              type="text"
+              placeholder="Phone"
+              value={this.state.phone}
+              onChange={(e) => this.setState({ phone: e.target.value })}
+            />
+          </div>
+          <div className="field">
             <label>Gender</label>
             <select
               value={this.state.gender}
@@ -72,6 +84,9 @@ class SaveContacts extends Component {
             </select>
           </div>
           <button className="ui button red">Create Contact</button>
+          <Link to="/">
+            <button className="ui button red">Cancel</button>
+          </Link>
         </form>
       </div>
     );

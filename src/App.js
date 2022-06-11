@@ -12,18 +12,20 @@ function App() {
 
   const saveContactHandler = (contact) => {
     setContact([...contacts, { id: uuidv4(), ...contact }]);
-    console.log(contact);
   };
 
+  //storing contacts to localstorage
   useEffect(() => {
     const showContacts = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (showContacts) setContact(showContacts);
   }, []);
 
+  //getting the contacts from localstorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
   }, [contacts]);
 
+  // delete contact function and update new available contact data list
   const removeContact = (id) => {
     const newDisplayList = contacts.filter((currVal) => {
       return currVal.id !== id;
@@ -39,23 +41,15 @@ function App() {
           <Route
             path="/"
             exact
-            render={(props) => (
-              <DisplayList
-                {...props}
-                contacts={contacts}
-                removeContact={removeContact}
-              />
-            )}
+            element={
+              <DisplayList contacts={contacts} removeContact={removeContact} />
+            }
           />
+        </Routes>
+        <Routes>
           <Route
             path="/add"
-            exact
-            render={(props) => (
-              <SaveContacts
-                {...props}
-                saveContactHandler={saveContactHandler}
-              />
-            )}
+            element={<SaveContacts saveContactHandler={saveContactHandler} />}
           />
         </Routes>
       </Router>

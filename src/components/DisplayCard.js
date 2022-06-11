@@ -3,9 +3,8 @@ import male from "../img/male.png";
 import female from "../img/female.png";
 
 const DisplayCard = (props) => {
-  const { name, email, id, gender } = props.propsToChild;
+  const { name, email, phone, id, gender } = props.propsToChild;
 
-  console.log(props.propsToChild);
   return (
     <div className="item">
       {gender === "Male" ? (
@@ -15,7 +14,8 @@ const DisplayCard = (props) => {
       )}
       <div className="content">
         <div className="header">{name}</div>
-        <div>{email}</div>
+        <div>Email: {email}</div>
+        <div>Phone Number: {phone}</div>
       </div>
       <i
         className="trash alternate outline icon"

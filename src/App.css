@@ -25,3 +25,12 @@ i.icon {
 #contact-heading {
   margin-top: 90px;
 }
+
+.mainHeading {
+  color: rgb(94, 18, 18);
+}
+
+.myContacts {
+  display: flex;
+  justify-content: space-between;
+}
