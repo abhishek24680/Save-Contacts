@@ -11,7 +11,7 @@ import UserInfo from "./components/UserInfo";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [contacts, setContact] = useState([]);
+  const [contacts, setContact] = useState(null);
 
   const saveContactHandler = async (contact) => {
     const request = {
