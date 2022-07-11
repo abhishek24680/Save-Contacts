@@ -12,6 +12,7 @@ class SaveContacts extends Component {
       email: "",
       phone: "",
       gender: "",
+      error: null,
     };
   }
 
@@ -36,7 +37,6 @@ class SaveContacts extends Component {
     }
     this.props.saveContactHandler(this.state);
     this.setState({ name: "", email: "", phone: "", gender: "" });
-    // console.log(this.props);
   };
 
   render() {
@@ -49,6 +49,7 @@ class SaveContacts extends Component {
             <input
               type="text"
               placeholder="Name"
+              pattern="^[A-Za-z]+$"
               value={this.state.name}
               onChange={(e) => this.setState({ name: e.target.value })}
             />
@@ -58,6 +59,7 @@ class SaveContacts extends Component {
             <input
               type="text"
               placeholder="Email"
+              pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
               value={this.state.email}
               onChange={(e) => this.setState({ email: e.target.value })}
             />
@@ -67,6 +69,7 @@ class SaveContacts extends Component {
             <input
               type="text"
               placeholder="Phone"
+              pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$"
               value={this.state.phone}
               onChange={(e) => this.setState({ phone: e.target.value })}
             />

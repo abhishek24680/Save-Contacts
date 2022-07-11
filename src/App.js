@@ -1,36 +1,67 @@
 import "./App.css";
 import Header from "./components/Header";
 import SaveContacts from "./components/SaveContacts";
+import EditContacts from "./components/EditContacts";
+import api from "./config/ApiConfig";
+import DeleteContacts from "./components/DeleteContacts";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
 import DisplayList from "./components/DisplayList";
+import UserInfo from "./components/UserInfo";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const STORAGE_KEY = "Saved Contacts";
   const [contacts, setContact] = useState([]);
 
-  const saveContactHandler = (contact) => {
-    setContact([...contacts, { id: uuidv4(), ...contact }]);
+  const saveContactHandler = async (contact) => {
+    const request = {
+      id: uuidv4(),
+      ...contact,
+    };
+    const res = await api.post("http://localhost:9000/savedContacts", request);
+    setContact([...contacts, res.data]);
   };
 
-  //storing contacts to localstorage
+  const getContacts = async () => {
+    const res = await api.get("http://localhost:9000/savedContacts");
+    return res.data;
+  };
+
+  //getting the contacts
   useEffect(() => {
-    const showContacts = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (showContacts) setContact(showContacts);
+    const getContactData = async () => {
+      const showAllContacts = await getContacts();
+      if (showAllContacts) setContact(showAllContacts);
+    };
+    getContactData();
   }, []);
 
-  //getting the contacts from localstorage
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
-  }, [contacts]);
-
   // delete contact function and update new available contact data list
-  const removeContact = (id) => {
+  const removeContact = async (id) => {
+    await api.delete(`http://localhost:9000/savedContacts/${id}`);
     const newDisplayList = contacts.filter((currVal) => {
       return currVal.id !== id;
     });
     setContact(newDisplayList);
+  };
+
+  const updateContactHandler = async (contactToUpdate) => {
+    const { name, email, phone, gender, id } = contactToUpdate;
+    const request = {
+      name: name,
+      email: email,
+      phone: phone,
+      gender: gender,
+    };
+    const res = await api.put(
+      `http://localhost:9000/savedContacts/${contactToUpdate.id}`,
+      request
+    );
+    setContact(
+      contacts.map((c) => {
+        return c.id === id ? { ...res.data } : c;
+      })
+    );
   };
 
   return (
@@ -38,24 +69,24 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route
-            path="/"
-            exact
-            element={
-              <DisplayList contacts={contacts} removeContact={removeContact} />
-            }
-          />
-        </Routes>
-        <Routes>
+          <Route path="/" exact element={<DisplayList contacts={contacts} />} />
           <Route
             path="/add"
             element={<SaveContacts saveContactHandler={saveContactHandler} />}
           />
+          <Route path="/view/:id" element={<UserInfo />} />
+          <Route
+            path="/edit/:id"
+            element={
+              <EditContacts updateContactHandler={updateContactHandler} />
+            }
+          />
+          <Route
+            path="/delete"
+            element={<DeleteContacts removeContact={removeContact} />}
+          />
         </Routes>
       </Router>
-      {/* <Header />
-      <SaveContacts saveContactHandler={saveContactHandler} />
-      <DisplayList contacts={contacts} removeContact={removeContact} /> */}
     </div>
   );
 }

@@ -34,3 +34,49 @@ i.icon {
   display: flex;
   justify-content: space-between;
 }
+
+.userInfo {
+  display: flex;
+  justify-content: center;
+}
+
+.userImage {
+  width: 400px;
+  height: 400px;
+}
+
+.userDetails {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+.emptyDescription {
+  margin-top: 40px;
+}
+
+.contactLayout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.savedContacts {
+  display: inline-flex;
+  margin: 10px 0px;
+}
+
+.userName {
+  color: black;
+  font-weight: bold;
+}
+
+.editDeleteIcon {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
+.iconSpace {
+  padding: 0px 20px;
+}
